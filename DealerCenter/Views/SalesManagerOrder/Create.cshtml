@@ -1,0 +1,59 @@
+﻿@model DealerCenter.Models.OrderCreateViewModel
+
+@{
+    ViewBag.Title = "Добавить заказ";
+}
+
+<h4>Состав заказа</h4>
+<form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label">Поставщик: </label>
+        <select name="supplierId" asp-items="ViewBag.Suppliers"
+                class="form-control"></select>
+        <label class="control-label">Класс спецтехники: </label>
+        <select name="machineryClassId" asp-items="ViewBag.MachineryClasses"
+                class="form-control"></select>
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+
+<form asp-action="Create" asp-controller="SalesManagerOrder">
+    <div class="form-group">
+        <label asp-for="MachineryId" class="control-label">Модель спецтехники</label>
+        <select asp-for="MachineryId" asp-items="ViewBag.Machineries" class="form-control"></select>
+    </div>
+
+    <h4>Ответственный персонал</h4>
+
+    <div class="form-group">
+        <label asp-for="SalesManagerId" class="control-label">Продавец</label>
+        <select asp-for="SalesManagerId" asp-items="ViewBag.SalesManagers" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PurchaseManagerId" class="control-label">Ответственный за закупку</label>
+        <select asp-for="PurchaseManagerId" asp-items="ViewBag.PurchaseManagers" class="form-control"></select>
+    </div>
+
+    <h4>Данные клиента</h4>
+
+    <div class="form-group">
+        <label asp-for="ClientName" class="control-label">Имя клиента</label>
+        <input type="text" asp-for="ClientName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ClientPassport" class="control-label">Паспортные данные</label>
+        <input type="text" asp-for="ClientPassport" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ClientPhoneNumber" class="control-label">Номер телефона</label>
+        <input type="text" asp-for="ClientPhoneNumber" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Добавить заказ" class="btn btn-default" />
+    </div>
+</form>

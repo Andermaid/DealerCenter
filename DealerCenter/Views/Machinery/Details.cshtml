@@ -1,0 +1,104 @@
+﻿@model IEnumerable<DealerCenter.Models.Order>
+@{
+    ViewData["Title"] = "Список заказов на модель спецтехники";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Заказы на модель @Model.FirstOrDefault().Machinery.Name</title>
+</head>
+
+<body>
+    <h3>Заказы на модель @Model.FirstOrDefault().Machinery.Name</h3>
+    <h4>Активные заказы</h4>
+    <table class="table table-striped">
+        <tr>
+            <td>Id</td>
+            <td>Продавец</td>
+            <td>Ответственный за закупку</td>
+            <td>Клиент</td>
+            <td>Дата оформления</td>
+            <td>Дата поставки</td>
+            <td>Статус заказа</td>
+            <td>Статус оплаты</td>
+            <td>Действия</td>
+        </tr>
+        @foreach (var order in Model.Where(o => o.OrderStatusId != (int)OrderStatusEnum.ЗаказЗакрыт ||
+                                           o.OrderStatusId != (int)OrderStatusEnum.ЗаказОтменён))
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.SalesManager.Name</td>
+                <td>@order.PurchaseManager.Name</td>
+                <td>@order.Client.Name</td>
+                <td>@order.RegistrationDate</td>
+                @if (order.DeliveryDate != default)
+                {
+                    <td>@order.DeliveryDate</td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td>@order.OrderStatus.Name</td>
+                <td>@order.PaymentStatus.Name</td>
+                <td>
+                    <a asp-action="Details" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Подробнее</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <h4>Закрытые заказы</h4>
+    <table class="table table-striped">
+        <tr>
+            <td>Id</td>
+            <td>Продавец</td>
+            <td>Ответственный за закупку</td>
+            <td>Клиент</td>
+            <td>Дата оформления</td>
+            <td>Дата поставки</td>
+            <td>Дата закрытия</td>
+            <td></td>
+        </tr>
+        @foreach (var order in Model.Where(o => o.OrderStatusId == (int)OrderStatusEnum.ЗаказЗакрыт))
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.SalesManager.Name</td>
+                <td>@order.PurchaseManager.Name</td>
+                <td>@order.Client.Name</td>
+                <td>@order.RegistrationDate</td>
+                <td>@order.DeliveryDate</td>
+                <td>@order.ClosingDate</td>
+                <td>
+                    <a asp-action="Details" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Подробнее</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <h4>Отменённые заказы</h4>
+    <table class="table table-striped">
+        <tr>
+            <td>Id</td>
+            <td>Продавец</td>
+            <td>Ответственный за закупку</td>
+            <td>Клиент</td>
+            <td></td>
+        </tr>
+        @foreach (var order in Model.Where(o => o.OrderStatusId == (int)OrderStatusEnum.ЗаказОтменён))
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.SalesManager.Name</td>
+                <td>@order.PurchaseManager.Name</td>
+                <td>@order.Client.Name</td>
+                <td>
+                    <a asp-action="Details" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Подробнее</a>
+                </td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

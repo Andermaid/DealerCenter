@@ -1,0 +1,18 @@
+﻿@model DealerCenter.Models.Supplier
+@{
+    ViewBag.Title = "Удаление поставщика";
+}
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Вы уверены, что хотите удалить поставщика "@Model.Name" ?</dt>
+    </dl>
+
+    <div>
+        <form asp-controller="Supplier" asp-action="FlagDelete" method="post">
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="Удалить" />
+            </div>
+        </form>
+    </div>
+</div>

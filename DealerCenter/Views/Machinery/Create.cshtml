@@ -1,0 +1,41 @@
+﻿@model DealerCenter.Models.Machinery
+
+@{
+    ViewBag.Title = "Добавить модель спецтехники";
+}
+
+<form asp-action="Create" asp-controller="Machinery">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label">Наименование</label>
+        <input type="text" asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MachineryClassId" class="control-label">Класс спецтехники</label>
+        <select asp-for="MachineryClassId" asp-items="ViewBag.Classes" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SupplierId" class="control-label">Поставщик</label>
+        <select asp-for="SupplierId" asp-items="ViewBag.Suppliers" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="YearOfManufacture" class="control-label">Год выпуска</label>
+        <input type="number" asp-for="YearOfManufacture" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PurchasePrice" class="control-label">Стоимость закупки (руб.)</label>
+        <input type="number" asp-for="PurchasePrice" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SellingPrice" class="control-label">Стоимость продажи (руб.)</label>
+        <input type="number" asp-for="SellingPrice" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Добавить модель спецтехники" class="btn btn-default" />
+    </div>
+</form>

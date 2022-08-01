@@ -1,0 +1,95 @@
+﻿@model IEnumerable<DealerCenter.Models.Supplier>
+@{
+    ViewData["Title"] = "Список поставщиков";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Поставщики</title>
+</head>
+
+<body>
+    @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.ОтветственныйЗаЗакупку.ToString()))
+    {
+        <a asp-action="Create">Добавить поставщика</a>
+    }
+        <h3>Поставщики</h3>
+        <h4>Действующие поставщики</h4>
+        <table class="table table-striped">
+            <tr>
+                <td>Имя</td>
+                <td>Телефон</td>
+                <td>Действия</td>
+                <td></td>
+                <td></td>
+            </tr>
+            @foreach (var supplier in Model.Where(e => !e.isDeleted))
+            {
+        <tr>
+            <td>@supplier.Name</td>
+            <td>@supplier.PhoneNumber</td>
+            <td>
+                <a asp-action="Details" asp-controller="Supplier" asp-route-id="@supplier.Id">Подробнее</a>
+            </td>
+            @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.ОтветственныйЗаЗакупку.ToString()))
+            {
+                <td>
+                    <a asp-action="Edit" asp-controller="Supplier" asp-route-id="@supplier.Id">Редактировать</a>
+                </td>
+                @if (supplier.Machineries.Count == 0)
+                {
+                    <td>
+                        <a asp-action="Delete" asp-controller="Supplier" asp-route-id="@supplier.Id">Удалить</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="FlagDelete" asp-controller="Supplier" asp-route-id="@supplier.Id">Удалить</a>
+                    </td>
+                }
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
+        </tr>
+            }
+        </table>
+        @if (Model.Where(e => e.isDeleted).Count() != 0)
+        {
+            <h4>Удалённые поставщики</h4>
+            <table class="table table-striped">
+                <tr>
+                    <td>Имя</td>
+                    <td>Телефон</td>
+                    <td>Действия</td>
+                    <td></td>
+                </tr>
+                @foreach (var supplier in Model.Where(e => e.isDeleted))
+                {
+            <tr>
+                <td>@supplier.Name</td>
+                <td>@supplier.PhoneNumber</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Supplier" asp-route-id="@supplier.Id">Подробнее</a>
+                </td>
+                @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.ОтветственныйЗаЗакупку.ToString()))
+                {
+                    <td>
+                        <a asp-action="Restore" asp-controller="Supplier" asp-route-id="@supplier.Id">Восстановить</a>
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+            </tr>
+                }
+            </table>
+        }
+    </body>
+</html>

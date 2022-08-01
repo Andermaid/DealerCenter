@@ -1,0 +1,83 @@
+﻿@model IEnumerable<DealerCenter.Models.Order>
+@{
+    ViewData["Title"] = "Список заказов";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Заказы</title>
+</head>
+
+<body>
+    <h3>Активные заказы</h3>
+    <h4>Ожидают подтверждения</h4>
+    <table class="table table-striped">
+        <tr>
+            <td>Id</td>
+            <td>Клиент</td>
+            <td>Продавец</td>
+            <td>Состав заказа</td>
+            <td>Дата оформления</td>
+            <td>Действия</td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var order in Model.Where(o => o.OrderStatusId == (int)OrderStatusEnum.ПроверкаДоступностиЗакупки))
+        {
+    <tr>
+        <td>@order.Id</td>
+        <td>@order.Client.Name</td>
+        <td>@order.SalesManager.Name</td>
+        <td>@order.Machinery.Name</td>
+        <td>@order.RegistrationDate</td>
+        <td>
+            <a asp-action="Details" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Подробнее</a>
+        </td>
+        @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.ОтветственныйЗаЗакупку.ToString()))
+        {
+        <td>
+            <a asp-action="ChangeOrderStatusToWaitingForDelivery" asp-controller="PurchaseManagerOrder" asp-route-id="@order.Id">Подтвердить закупку</a>
+        </td>
+        <td>
+            <a asp-action="Cancel" asp-controller="PurchaseManagerOrder" asp-route-id="@order.Id">Отменить</a>
+        </td>
+        }
+    </tr>
+        }
+    </table>
+    <h4>Ожидают прибытия</h4>
+    <table class="table table-striped">
+        <tr>
+            <td>Id</td>
+            <td>Клиент</td>
+            <td>Продавец</td>
+            <td>Состав заказа</td>
+            <td>Дата оформления</td>
+            <td>Действия</td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var order in Model.Where(o => o.OrderStatusId == (int)OrderStatusEnum.ОжиданиеДоставки))
+        {
+    <tr>
+        <td>@order.Id</td>
+        <td>@order.Client.Name</td>
+        <td>@order.SalesManager.Name</td>
+        <td>@order.Machinery.Name</td>
+        <td>@order.RegistrationDate</td>
+        <td>
+            <a asp-action="Details" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Подробнее</a>
+        </td>
+        @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.ОтветственныйЗаЗакупку.ToString()))
+        {
+        <td>
+            <a asp-action="ChangeOrderStatusToReadyToTransfer" asp-controller="PurchaseManagerOrder" asp-route-id="@order.Id">Подтвердить прибытие</a>
+        </td>
+        }
+    </tr>
+        }
+    </table>
+</body>
+</html>

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<DealerCenter.Models.Client>
+@{
+    ViewData["Title"] = "Список клиентов";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Клиенты</title>
+</head>
+
+<body>
+    @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.Продавец.ToString()))
+    {
+        <a asp-action="Create">Добавить клиента</a>
+    }
+        <h3>Клиенты</h3>
+        <table class="table table-striped">
+            <tr>
+                <td>Имя</td>
+                <td>Паспортные данные</td>
+                <td>Телефон</td>
+                <td>Действия</td>
+                <td></td>
+                <td></td>
+            </tr>
+            @foreach (var client in Model)
+            {
+        <tr>
+            <td>@client.Name</td>
+            <td>@client.Passport</td>
+            <td>@client.PhoneNumber</td>
+            @if (client.Orders.Count != 0)
+            {
+                <td>
+                    <a asp-action="Details" asp-controller="Client" asp-route-id="@client.Id">История заказов</a>
+                </td>
+            }
+            else
+            {
+                <td></td>
+            }
+
+            @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.Продавец.ToString()))
+            {
+                <td>
+                    <a asp-action="Edit" asp-controller="Client" asp-route-id="@client.Id">Редактировать</a>
+                </td>
+                @if (client.Orders.Count == 0)
+                {
+                    <td><a asp-action="Delete" asp-controller="Client" asp-route-id="@client.Id">Удалить</a></td>
+                }
+                else
+                {
+                    <td></td>
+                }
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
+        </tr>
+            }
+        </table>
+    </body>
+</html>

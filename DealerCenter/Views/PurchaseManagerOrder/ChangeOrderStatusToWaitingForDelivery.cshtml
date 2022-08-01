@@ -1,0 +1,23 @@
+﻿@model DealerCenter.Models.Order
+@{
+    ViewBag.Title = "Изменение статуса заказа";
+}
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Введите ожидаемую дату поставки.</dt>
+    </dl>
+
+    <div>
+        <form asp-controller="PurchaseManagerOrder" asp-action="ChangeOrderStatusToWaitingForDelivery" method="post">
+            <div class="form-group">
+                <label asp-for="DeliveryDate" class="control-label">Дата доставки</label>
+                <input type ="datetime-local" min="@DateTime.Now" value="@DateTime.Now" asp-for= "DeliveryDate" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="Подтвердить" />
+            </div>
+        </form>
+    </div>
+</div>

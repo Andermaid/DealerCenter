@@ -1,0 +1,126 @@
+﻿@model IEnumerable<DealerCenter.Models.Machinery>
+@{
+    ViewData["Title"] = "Список моделей спецтехники";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Модели спецтехники</title>
+</head>
+
+<body>
+    @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.ОтветственныйЗаЗакупку.ToString()))
+    {
+        <a asp-action="Create">Добавить модель спецтехники</a>
+    }
+        <h3>Модели спецтехники</h3>
+
+        <form method="get">
+            <div class="form-inline form-group">
+                <label class="control-label">Поставщик: </label>
+                <select name="supplierId" asp-items="ViewBag.Suppliers"
+                        class="form-control"></select>
+                <label class="control-label">Класс спецтехники: </label>
+                <select name="machineryClassId" asp-items="ViewBag.MachineryClasses"
+                        class="form-control"></select>
+
+                <input type="submit" value="Фильтр" class="btn btn-default" />
+            </div>
+        </form>
+        <h4>Доступные модели</h4>
+        <table class="table table-striped">
+            <tr>
+                <td>Наименование</td>
+                <td>Класс</td>
+                <td>Год выпуска</td>
+                <td>Поставщик</td>
+                <td>Цена закупки (руб.)</td>
+                <td>Цена продажи (руб.)</td>
+                <td>Действия</td>
+                <td></td>
+                <td></td>
+            </tr>
+            @foreach (var machinery in Model.Where(m => !m.isDeleted))
+            {
+        <tr>
+            <td>@machinery.Name</td>
+            <td>@machinery.MachineryClass.Name</td>
+            <td>@machinery.YearOfManufacture</td>
+            <td>@machinery.Supplier.Name</td>
+            <td>@machinery.PurchasePrice</td>
+            <td>@machinery.SellingPrice</td>
+            <td>
+                <a asp-action="Details" asp-controller="Machinery" asp-route-id="@machinery.Id">История заказов</a>
+            </td>
+            @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.ОтветственныйЗаЗакупку.ToString()))
+            {
+                <td>
+                    <a asp-action="Edit" asp-controller="Machinery" asp-route-id="@machinery.Id">Редактировать</a>
+                </td>
+                @if (machinery.Orders.Count == 0)
+                {
+                    <td>
+                        <a asp-action="Delete" asp-controller="Machinery" asp-route-id="@machinery.Id">Удалить</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="FlagDelete" asp-controller="Machinery" asp-route-id="@machinery.Id">Удалить</a>
+                    </td>
+                }
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
+
+        </tr>
+            }
+        </table>
+
+        @if (Model.Where(e => e.isDeleted).Count() != 0)
+        {
+            <h3>Удалённые модели</h3>
+            <table class="table table-striped">
+                <tr>
+                    <td>Наименование</td>
+                    <td>Класс</td>
+                    <td>Год выпуска</td>
+                    <td>Поставщик</td>
+                    <td>Цена закупки (руб.)</td>
+                    <td>Цена продажи (руб.)</td>
+                    <td>Действия</td>
+                    <td></td>
+                </tr>
+                @foreach (var machinery in Model.Where(e => e.isDeleted))
+                {
+            <tr>
+                <td>@machinery.Name</td>
+                <td>@machinery.MachineryClass.Name</td>
+                <td>@machinery.YearOfManufacture</td>
+                <td>@machinery.Supplier.Name</td>
+                <td>@machinery.PurchasePrice</td>
+                <td>@machinery.SellingPrice</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Machinery" asp-route-id="@machinery.Id">История заказов</a>
+                </td>
+                @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.ОтветственныйЗаЗакупку.ToString()))
+                {
+                    <td>
+                        <a asp-action="Restore" asp-controller="Machinery" asp-route-id="@machinery.Id">Восстановить</a>
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+            </tr>
+                }
+            </table>
+        }
+    </body>
+</html>

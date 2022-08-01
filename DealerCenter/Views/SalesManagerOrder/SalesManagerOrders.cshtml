@@ -1,0 +1,137 @@
+﻿@model IEnumerable<DealerCenter.Models.Order>
+@{
+    ViewData["Title"] = "Список заказов";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Заказы</title>
+</head>
+
+<body>
+    @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.Продавец.ToString()))
+    {
+        <a asp-action="Create">Оформить заказ</a>
+    }
+        <h3>Активные заказы</h3>
+        <h4>Ожидающие предоплату</h4>
+        <table class="table table-striped">
+            <tr>
+                <td>Id</td>
+                <td>Клиент</td>
+                <td>Продавец</td>
+                <td>Ответственный за закупку</td>
+                <td>Состав заказа</td>
+                <td>Дата оформления</td>
+                <td>Действия</td>
+                <td></td>
+                <td></td>
+            </tr>
+            @foreach (var order in Model.Where(o => o.PaymentStatusId == (int)PaymentStatusEnum.ОжиданиеПредоплаты))
+            {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.Client.Name</td>
+            <td>@order.SalesManager.Name</td>
+            <td>@order.PurchaseManager.Name</td>
+            <td>@order.Machinery.Name</td>
+            <td>@order.RegistrationDate</td>
+            <td>
+                <a asp-action="Details" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Подробнее</a>
+            </td>
+            @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.Продавец.ToString()))
+            {
+                <td>
+                    <a asp-action="ChangePaymentStatusToAwaitingFullPayment" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Обновить статус оплаты</a>
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Удалить заказ</a>
+                </td>
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
+        </tr>
+            }
+        </table>
+        <h4>Ожидающие полную оплату</h4>
+        <table class="table table-striped">
+            <tr>
+                <td>Id</td>
+                <td>Клиент</td>
+                <td>Продавец</td>
+                <td>Ответственный за закупку</td>
+                <td>Состав заказа</td>
+                <td>Дата оформления</td>
+                <td>Действия</td>
+                <td></td>
+            </tr>
+            @foreach (var order in Model.Where(o => o.PaymentStatusId == (int)PaymentStatusEnum.ОжиданиеПолнойОплаты &&
+                                                    o.OrderStatusId == (int)OrderStatusEnum.ГотовКПередаче))
+            {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.Client.Name</td>
+            <td>@order.SalesManager.Name</td>
+            <td>@order.PurchaseManager.Name</td>
+            <td>@order.Machinery.Name</td>
+            <td>@order.RegistrationDate</td>
+            <td>
+                <a asp-action="Details" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Подробнее</a>
+            </td>
+            @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.Продавец.ToString()))
+            {
+                <td>
+                    <a asp-action="ChangePaymentStatusToFullyPaid" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Обновить статус оплаты</a>
+                </td>
+            }
+            else
+            {
+                <td></td>
+            }
+        </tr>
+            }
+        </table>
+        <h4>Готовые к выдаче</h4>
+        <table class="table table-striped">
+            <tr>
+                <td>Id</td>
+                <td>Клиент</td>
+                <td>Продавец</td>
+                <td>Ответственный за закупку</td>
+                <td>Состав заказа</td>
+                <td>Дата оформления</td>
+                <td>Действия</td>
+                <td></td>
+            </tr>
+            @foreach (var order in Model.Where(o => o.PaymentStatusId == (int)PaymentStatusEnum.ПолностьюОплачен))
+            {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.Client.Name</td>
+            <td>@order.SalesManager.Name</td>
+            <td>@order.PurchaseManager.Name</td>
+            <td>@order.Machinery.Name</td>
+            <td>@order.RegistrationDate</td>
+            <td>
+                <a asp-action="Details" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Подробнее</a>
+            </td>
+            @if (User.IsInRole(RoleEnum.Администратор.ToString()) || User.IsInRole(RoleEnum.Продавец.ToString()))
+            {
+                <td>
+                    <a asp-action="Close" asp-controller="SalesManagerOrder" asp-route-id="@order.Id">Закрыть заказ</a>
+                </td>
+            }
+            else
+            {
+                <td></td>
+            }
+        </tr>
+            }
+        </table>
+    </body>
+</html>

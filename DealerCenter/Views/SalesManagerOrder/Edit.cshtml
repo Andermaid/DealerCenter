@@ -1,0 +1,30 @@
+﻿@model DealerCenter.Models.Order
+@{
+    ViewBag.Title = "Редактировать заказ";
+}
+
+<form asp-action="edit" asp-controller="SalesManagerOrder" asp-route-id="@Model.Id">
+    <div class="form-group">
+        <label asp-for="ClientId" class="control-label">Клиент</label>
+        <select asp-for="ClientId" asp-items="ViewBag.Clients" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SalesManagerId" class="control-label">Продавец</label>
+        <select asp-for="SalesManagerId" asp-items="ViewBag.SalesManagers" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PurchaseManagerId" class="control-label">Ответственный за закупку</label>
+        <select asp-for="PurchaseManagerId" asp-items="ViewBag.PurchaseManagers" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MachineryId" class="control-label">Состав заказа</label>
+        <select asp-for="MachineryId" asp-items="ViewBag.Machineries" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Сохранить изменения" class="btn btn-default" />
+    </div>
+</form>

@@ -1,0 +1,118 @@
+﻿@model DealerCenter.Models.Order
+@{
+    ViewBag.Title = "Детали заказа №" + Model.Id;
+}
+
+<h3>Заказ №@Model.Id</h3>
+<h4>Основное</h4>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Продавец</dt>
+        <dd>@Model.SalesManager.Name</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Ответственный за закупку</dt>
+        <dd>@Model.PurchaseManager.Name</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Дата оформления</dt>
+        <dd>@Model.RegistrationDate</dd>
+    </dl>
+</div>
+@if (Model.DeliveryDate != default)
+{
+    <div>
+        <dl class="dl-horizontal">
+            <dt>Дата доставки</dt>
+            <dd>@Model.DeliveryDate</dd>
+        </dl>
+    </div>
+}
+@if (Model.ClosingDate != default)
+{
+    <div>
+        <dl class="dl-horizontal">
+            <dt>Дата закрытия</dt>
+            <dd>@Model.ClosingDate</dd>
+        </dl>
+    </div>
+}
+<div>
+    <dl class="dl-horizontal">
+        <dt>Статус заказа</dt>
+        <dd>@Model.OrderStatus.Name</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Статус оплаты</dt>
+        <dd>@Model.PaymentStatus.Name</dd>
+    </dl>
+</div>
+<h4>Состав заказа</h4>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Модель спецтехники</dt>
+        <dd>@Model.Machinery.Name</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Год выпуска</dt>
+        <dd>@Model.Machinery.YearOfManufacture</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Класс спецтехники</dt>
+        <dd>@Model.Machinery.MachineryClass.Name</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Цена закупки (руб.)</dt>
+        <dd>@Model.PurchasePrice</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Цена продажи (руб.)</dt>
+        <dd>@Model.SellingPrice</dd>
+    </dl>
+</div>
+<h4>Данные поставщика</h4>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Поставщик</dt>
+        <dd>@Model.Machinery.Supplier.Name</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Контактный телефон</dt>
+        <dd>@Model.Machinery.Supplier.PhoneNumber</dd>
+    </dl>
+</div>
+<h4>Данные клиента</h4>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Имя клиента</dt>
+        <dd>@Model.Client.Name</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Паспортные данные</dt>
+        <dd>@Model.Client.Passport</dd>
+    </dl>
+</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Контактный телефон</dt>
+        <dd>@Model.Client.PhoneNumber</dd>
+    </dl>
+</div>

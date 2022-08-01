@@ -1,0 +1,64 @@
+﻿@model IEnumerable<DealerCenter.Models.Machinery>
+@{
+    ViewData["Title"] = "Список заказов клиента";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Модели спецтехники поставщика @Model.FirstOrDefault().Supplier.Name</title>
+</head>
+
+<body>
+    <h3>Модели спецтехники от @Model.FirstOrDefault().Supplier.Name</h3>
+    <h4>Доступные модели</h4>
+    <table class="table table-striped">
+        <tr>
+            <td>Наименование</td>
+            <td>Класс</td>
+            <td>Год выпуска</td>
+            <td>Цена закупки (руб.)</td>
+            <td>Цена продажи (руб.)</td>
+            <td>Действия</td>
+        </tr>
+        @foreach (var machinery in Model.Where(m => !m.isDeleted))
+        {
+            <tr>
+                <td>@machinery.Name</td>
+                <td>@machinery.MachineryClass.Name</td>
+                <td>@machinery.YearOfManufacture</td>
+                <td>@machinery.PurchasePrice</td>
+                <td>@machinery.SellingPrice</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Machinery" asp-route-id="@machinery.Id">Подробнее</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <h4>Удалённые модели</h4>
+    <table class="table table-striped">
+        <tr>
+            <td>Наименование</td>
+            <td>Класс</td>
+            <td>Год выпуска</td>
+            <td>Цена закупки (руб.)</td>
+            <td>Цена продажи (руб.)</td>
+            <td>Действия</td>
+        </tr>
+        @foreach (var machinery in Model.Where(m => m.isDeleted))
+        {
+            <tr>
+                <td>@machinery.Name</td>
+                <td>@machinery.MachineryClass.Name</td>
+                <td>@machinery.YearOfManufacture</td>
+                <td>@machinery.PurchasePrice</td>
+                <td>@machinery.SellingPrice</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Machinery" asp-route-id="@machinery.Id">Подробнее</a>
+                </td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

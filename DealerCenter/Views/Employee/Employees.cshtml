@@ -1,0 +1,86 @@
+﻿@model IEnumerable<DealerCenter.Models.Employee>
+@{
+    ViewData["Title"] = "Список сотрудников";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Сотрудники</title>
+</head>
+
+<body>
+    <a asp-action="Create">Добавить пользователя</a>
+
+    <h3>Список сотрудников</h3>
+    <h4>Действующие сотрудники</h4>
+    <table class="table table-striped">
+        <tr>
+            <td>Имя</td>
+            <td>Телефон</td>
+            <td>Должность</td>
+            <td>Логин</td>
+            <td>Действия</td>
+            <td></td>
+            <td></td>
+        </tr>
+        @foreach (var employee in Model.Where(e => !e.isDeleted))
+        {
+    <tr>
+        <td>@employee.Name</td>
+        <td>@employee.PhoneNumber</td>
+        <td>@employee.Role.Name</td>
+        <td>@employee.Login</td>
+        <td>
+            <a asp-action="Edit" asp-controller="Employee" asp-route-id="@employee.Id">Редактировать</a>
+        </td>
+        @if (employee.RoleId != (int)RoleEnum.Администратор)
+        {
+            <td>
+                <a asp-action="Details" asp-controller="Employee" asp-route-id="@employee.Id">История заказов</a>
+            </td>
+            <td>
+                <a asp-action="FlagDelete" asp-controller="Employee" asp-route-id="@employee.Id">Удалить</a>
+            </td>
+        }
+        else
+        {
+            <td></td>
+            <td></td>
+        }
+
+    </tr>
+        }
+    </table>
+    @if (Model.Where(e => e.isDeleted).Count() != 0)
+    {
+        <h4>Удалённые сотрудники</h4>
+        <table class="table table-striped">
+            <tr>
+                <td>Имя</td>
+                <td>Телефон</td>
+                <td>Должность</td>
+                <td>Логин</td>
+                <td>Действия</td>
+                <td></td>
+            </tr>
+            @foreach (var employee in Model.Where(e => e.isDeleted))
+            {
+                <tr>
+                    <td>@employee.Name</td>
+                    <td>@employee.PhoneNumber</td>
+                    <td>@employee.Role.Name</td>
+                    <td>@employee.Login</td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Employee" asp-route-id="@employee.Id">История заказов</a>
+                    </td>
+                    <td>
+                        <a asp-action="Restore" asp-controller="Employee" asp-route-id="@employee.Id">Восстановить</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</body>
+</html>
